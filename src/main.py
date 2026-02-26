@@ -116,12 +116,13 @@ class TripApp:
 
     def _on_ip_checked(self, ip: str) -> None:
         """Called on main thread after every check."""
+        target = self._config.target_ip
         # Update overlay
         if self._float_win and self._float_win.winfo_exists():
-            self._float_win.update_ip(ip, self._config.target_ip)
+            self._float_win.update_ip(ip, target)
         # Update tray icon
         if self._tray:
-            self._tray.set_status(ip == self._config.target_ip)
+            self._tray.set_status(ip == target)
 
     # ── Overlay ──────────────────────────────────────────────────────────
 

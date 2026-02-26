@@ -52,17 +52,22 @@ class IPMonitor:
     # ── Manual recheck (debounced) ───────────────────────────────────────
 
     def recheck(self) -> None:
+        """Trigger an immediate recheck by waking the monitor thread."""
         now = time.time()
         if now - self._last_manual < 2:
             return
         self._last_manual = now
-        self._do_check(manual=True)
+        # Wake the background thread to do the check (don't call _do_check from other threads)
+        self._force_check = True
+        self._wake_event.set()
 
     # ── Internal loop ────────────────────────────────────────────────────
 
     def _loop(self) -> None:
+        self._force_check = False
         while not self._stop_event.is_set():
-            self._do_check(manual=False)
+            self._do_check(manual=self._force_check)
+            self._force_check = False
             interval = self._config.check_interval
             # Wait for interval OR until woken
             self._wake_event.wait(timeout=interval)
@@ -106,3 +111,4 @@ class IPMonitor:
         except Exception as e:
             self._logger.log_error(e)
             return None
+
