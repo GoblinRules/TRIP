@@ -13,7 +13,7 @@ import sys
 # ── App metadata ─────────────────────────────────────────────────────────────
 APP_NAME = "TRIP"
 APP_DISPLAY_NAME = "TRIP — Tray IP"
-APP_VERSION = "2.1.0"
+APP_VERSION = "2.2.0"
 IP_API_URL = "https://ipinfo.io/json"
 DEFAULT_IP = "0.0.0.0"
 

@@ -127,3 +127,16 @@ class FloatingWindow(tk.Toplevel):
 
         alpha = float(self._config.window_alpha) if match else 1.0
         self.attributes("-alpha", alpha)
+
+    def show_error(self) -> None:
+        """Show an error/unavailable state when IP lookup fails."""
+        YELLOW = "#eab308"
+        YELLOW_BG = "#2e2a0a"
+
+        self._dot.config(fg=YELLOW)
+        self._status_label.config(text="TRIP — UNAVAILABLE")
+        self._label.config(text="no connection", fg=YELLOW, bg=YELLOW_BG)
+        self._ip_frame.config(bg=YELLOW_BG)
+        self._outer.config(bg=YELLOW)
+        self.configure(bg=YELLOW)
+        self.attributes("-alpha", 1.0)

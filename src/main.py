@@ -70,6 +70,7 @@ class TripApp:
             logger=self._logger,
             on_change=self._on_ip_change,
             on_check=lambda ip: self._enqueue(self._on_ip_checked, ip),
+            on_error=lambda: self._enqueue(self._on_ip_error),
         )
         self._monitor.start()
 
@@ -123,6 +124,11 @@ class TripApp:
         # Update tray icon
         if self._tray:
             self._tray.set_status(ip == target)
+
+    def _on_ip_error(self) -> None:
+        """Called on main thread when all IP providers fail."""
+        if self._float_win and self._float_win.winfo_exists():
+            self._float_win.show_error()
 
     # ── Overlay ──────────────────────────────────────────────────────────
 
