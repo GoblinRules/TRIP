@@ -14,7 +14,6 @@ import sys
 APP_NAME = "TRIP"
 APP_DISPLAY_NAME = "TRIP — Tray IP"
 APP_VERSION = "2.2.0"
-IP_API_URL = "https://ipinfo.io/json"
 DEFAULT_IP = "0.0.0.0"
 
 # ── Defaults ─────────────────────────────────────────────────────────────────

@@ -35,6 +35,9 @@ venv/
 .venv/
 env/
 
+# Build helpers
+create_release.bat
+
 # Misc
 *.bak
 *.tmp
