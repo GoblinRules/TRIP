@@ -24,7 +24,7 @@ python "$root\setup_icons.py"
 
 # ── 3) PyInstaller ──
 Write-Host "[3/4] Building portable EXE with PyInstaller..." -ForegroundColor Yellow
-pyinstaller "$root\trip.spec" --noconfirm --clean --distpath "$root\dist" --workpath "$root\build"
+python -m PyInstaller "$root\trip.spec" --noconfirm --clean --distpath "$root\dist" --workpath "$root\build"
 
 if (-not (Test-Path "$root\dist\TRIP.exe")) {
     Write-Error "PyInstaller build failed — TRIP.exe not found."

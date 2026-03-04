@@ -2,7 +2,7 @@
 ; Produces: dist\TRIP_Setup.exe
 
 #define MyAppName "TRIP"
-#define MyAppVersion "2.2.0"
+#define MyAppVersion "2.3.0"
 #define MyAppPublisher "GoblinRules"
 #define MyAppURL "https://github.com/GoblinRules"
 #define MyAppExeName "TRIP.exe"

@@ -13,7 +13,7 @@ import sys
 # ── App metadata ─────────────────────────────────────────────────────────────
 APP_NAME = "TRIP"
 APP_DISPLAY_NAME = "TRIP — Tray IP"
-APP_VERSION = "2.2.0"
+APP_VERSION = "2.3.0"
 DEFAULT_IP = "0.0.0.0"
 
 # ── Defaults ─────────────────────────────────────────────────────────────────

@@ -6,7 +6,6 @@ __pycache__/
 *.egg-info/
 dist/
 build/
-*.spec
 
 # Logs — never upload
 src/logs/
@@ -28,7 +27,6 @@ desktop.ini
 
 # PyInstaller
 *.manifest
-*.spec
 
 # Virtual environments
 venv/
