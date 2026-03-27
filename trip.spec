@@ -23,7 +23,8 @@ a = Analysis(
     ],
     hiddenimports=[
         'src', 'src.main', 'src.config', 'src.constants',
-        'src.ip_monitor', 'src.logging_manager', 'src.notifications',
+        'src.ip_monitor', 'src.ip_actions', 'src.logging_manager',
+        'src.notifications',
         'src.ui', 'src.ui.floating_window', 'src.ui.settings_window',
         'src.ui.tray',
         'PIL', 'PIL.Image',
