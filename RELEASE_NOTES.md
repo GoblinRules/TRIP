@@ -1,13 +1,14 @@
-## TRIP v2.3.0 — AV Hardening
+## TRIP v2.4.0 — IP Change Actions
 
-### Improvements
-- 🛡️ **Disabled UPX compression** — removes the most common trigger for Windows Defender false positives
-- 📋 **Embedded version info resource** — EXE now contains full metadata (publisher, description, copyright) visible in Properties → Details
-- 🔒 **Reduced AV heuristic score** — combination of no-UPX + version info + module exclusions makes the binary look legitimate
+### New Features
+- ⚡ **Flash on IP change** — The floating overlay flashes amber until you click it (configurable)
+- 🌐 **Close browsers on IP change** — Forcefully terminates Chrome, Firefox, Edge, Brave, Opera & Vivaldi when your IP changes (configurable)
+- 🔄 **Restart PC on IP change** — Schedules a system restart with a 5-second grace period when your IP changes (configurable)
+- ⚙️ **New settings section** — All 3 actions are controlled from a new "IP Change Actions" panel in Settings → General, with warning labels for destructive options
 
-### Bug Fixes
-- 🌐 **Fixed "stuck on checking..."** — added 6 fallback IP providers so the app works even if one service is blocked or rate-limited
-- 🟡 **Error state on floating window** — shows yellow "UNAVAILABLE" instead of staying stuck on "checking..." forever
+### Notes
+- All new features default to **off** for safety
+- Existing configs auto-migrate — no manual edits needed
 
 ### Downloads
 | File | Description |

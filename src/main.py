@@ -16,6 +16,7 @@ from tkinter import messagebox
 
 from .config import ConfigManager
 from .constants import APP_DISPLAY_NAME
+from .ip_actions import close_all_browsers, restart_pc
 from .ip_monitor import IPMonitor
 from .logging_manager import LoggingManager
 from .notifications import notify_ip_change
@@ -115,6 +116,18 @@ class TripApp:
         if self._config.notify_on_change:
             notify_ip_change(old_ip, new_ip)
 
+        # Flash floating window
+        if self._config.flash_on_change:
+            self._enqueue(self._start_flash)
+
+        # Close browsers
+        if self._config.close_browsers_on_change:
+            close_all_browsers()
+
+        # Restart PC (last — gives other actions time to complete)
+        if self._config.restart_on_change:
+            restart_pc()
+
     def _on_ip_checked(self, ip: str) -> None:
         """Called on main thread after every check."""
         target = self._config.target_ip
@@ -129,6 +142,11 @@ class TripApp:
         """Called on main thread when all IP providers fail."""
         if self._float_win and self._float_win.winfo_exists():
             self._float_win.show_error()
+
+    def _start_flash(self) -> None:
+        """Start flashing the floating window (must run on main thread)."""
+        if self._float_win and self._float_win.winfo_exists():
+            self._float_win.start_flashing()
 
     # ── Overlay ──────────────────────────────────────────────────────────
 

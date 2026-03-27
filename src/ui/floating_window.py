@@ -72,8 +72,9 @@ class FloatingWindow(tk.Toplevel):
         self._label.pack()
 
         # Dragging — bind all child widgets
-        for widget in [self, self._outer, self._inner, self._header,
-                       self._dot, self._status_label, self._ip_frame, self._label]:
+        self._all_widgets = [self, self._outer, self._inner, self._header,
+                       self._dot, self._status_label, self._ip_frame, self._label]
+        for widget in self._all_widgets:
             widget.bind("<ButtonPress-1>", self._start_drag)
             widget.bind("<B1-Motion>", self._on_drag)
             widget.bind("<ButtonRelease-1>", self._end_drag)
@@ -82,11 +83,21 @@ class FloatingWindow(tk.Toplevel):
         self._drag_sx = 0
         self._drag_sy = 0
 
+        # Flash state
+        self._flashing = False
+        self._flash_after_id = None
+        self._flash_on = False
+        self._last_border_color = ACCENT
+        self._last_card_bg = BG_CARD
+
     # ── Drag handlers ────────────────────────────────────────────────────
 
     def _start_drag(self, event):
         self._drag_sx = event.x_root - self.winfo_x()
         self._drag_sy = event.y_root - self.winfo_y()
+        # Stop flashing on click
+        if self._flashing:
+            self.stop_flashing()
 
     def _on_drag(self, event):
         x = event.x_root - self._drag_sx
@@ -98,6 +109,47 @@ class FloatingWindow(tk.Toplevel):
         self._config.set("window_x", str(self.winfo_x()))
         self._config.set("window_y", str(self.winfo_y()))
         self._config.save()
+
+    # ── Flash animation ──────────────────────────────────────────────────
+
+    def start_flashing(self) -> None:
+        """Begin flashing the window border/background to attract attention."""
+        if self._flashing:
+            return
+        self._flashing = True
+        self._flash_on = False
+        self._do_flash()
+
+    def stop_flashing(self) -> None:
+        """Stop flashing and restore normal colours."""
+        self._flashing = False
+        if self._flash_after_id:
+            self.after_cancel(self._flash_after_id)
+            self._flash_after_id = None
+        # Restore to last known state
+        self._outer.config(bg=self._last_border_color)
+        self.configure(bg=self._last_border_color)
+        self._ip_frame.config(bg=self._last_card_bg)
+
+    def _do_flash(self) -> None:
+        """Toggle between flash colour and normal colour."""
+        if not self._flashing or not self.winfo_exists():
+            return
+        self._flash_on = not self._flash_on
+        if self._flash_on:
+            # Bright flash state
+            flash_border = "#f59e0b"  # Amber
+            flash_bg = "#422006"      # Dark amber
+            self._outer.config(bg=flash_border)
+            self.configure(bg=flash_border)
+            self._ip_frame.config(bg=flash_bg)
+            self.attributes("-alpha", 1.0)
+        else:
+            # Normal state
+            self._outer.config(bg=self._last_border_color)
+            self.configure(bg=self._last_border_color)
+            self._ip_frame.config(bg=self._last_card_bg)
+        self._flash_after_id = self.after(400, self._do_flash)
 
     # ── Update display ───────────────────────────────────────────────────
 
@@ -118,25 +170,39 @@ class FloatingWindow(tk.Toplevel):
             card_bg = RED_BG
             status_text = "MISMATCH"
 
+        # Store for flash restore
+        self._last_border_color = border_color
+        self._last_card_bg = card_bg
+
         self._dot.config(fg=dot_fg)
         self._status_label.config(text=f"TRIP — {status_text}")
         self._label.config(text=ip, fg=ip_fg, bg=card_bg)
-        self._ip_frame.config(bg=card_bg)
-        self._outer.config(bg=border_color)
-        self.configure(bg=border_color)
+
+        # Only update border/bg if not currently flashing
+        if not self._flashing:
+            self._ip_frame.config(bg=card_bg)
+            self._outer.config(bg=border_color)
+            self.configure(bg=border_color)
 
         alpha = float(self._config.window_alpha) if match else 1.0
-        self.attributes("-alpha", alpha)
+        if not self._flashing:
+            self.attributes("-alpha", alpha)
 
     def show_error(self) -> None:
         """Show an error/unavailable state when IP lookup fails."""
         YELLOW = "#eab308"
         YELLOW_BG = "#2e2a0a"
 
+        self._last_border_color = YELLOW
+        self._last_card_bg = YELLOW_BG
+
         self._dot.config(fg=YELLOW)
         self._status_label.config(text="TRIP — UNAVAILABLE")
         self._label.config(text="no connection", fg=YELLOW, bg=YELLOW_BG)
-        self._ip_frame.config(bg=YELLOW_BG)
-        self._outer.config(bg=YELLOW)
-        self.configure(bg=YELLOW)
-        self.attributes("-alpha", 1.0)
+
+        if not self._flashing:
+            self._ip_frame.config(bg=YELLOW_BG)
+            self._outer.config(bg=YELLOW)
+            self.configure(bg=YELLOW)
+            self.attributes("-alpha", 1.0)
+

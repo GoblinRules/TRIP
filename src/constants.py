@@ -13,7 +13,7 @@ import sys
 # ── App metadata ─────────────────────────────────────────────────────────────
 APP_NAME = "TRIP"
 APP_DISPLAY_NAME = "TRIP — Tray IP"
-APP_VERSION = "2.3.0"
+APP_VERSION = "2.4.0"
 DEFAULT_IP = "0.0.0.0"
 
 # ── Defaults ─────────────────────────────────────────────────────────────────
@@ -27,6 +27,9 @@ DEFAULT_SETTINGS = {
     "window_x": "100",
     "window_y": "100",
     "log_retention_days": "60",      # auto-purge threshold
+    "flash_on_change": "no",         # flash floating window on IP change
+    "close_browsers_on_change": "no",  # kill browsers on IP change
+    "restart_on_change": "no",       # restart PC on IP change
 }
 
 # ── Path resolution ──────────────────────────────────────────────────────────

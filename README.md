@@ -9,6 +9,9 @@ A lightweight Windows system tray utility that monitors your public IP address, 
 - **IP Monitoring** — Tracks your public IP and compares it to a configurable target
 - **Toast Notifications** — Windows native alerts when your IP changes
 - **Floating Overlay** — Always-on-top, draggable IP status window with colour-coded state
+- **Flash on Change** — Overlay flashes amber until clicked when IP changes
+- **Close Browsers on Change** — Optionally kills all browsers when IP changes
+- **Restart PC on Change** — Optionally restarts the PC when IP changes
 - **Rich Log Viewer** — Paginated, searchable, sortable log table with CSV export
 - **Auto-Purge** — Automatically removes log entries older than a configurable threshold (default: 60 days)
 - **Portable & Installer** — Run standalone or install with Start Menu + startup shortcuts
@@ -40,6 +43,9 @@ window_alpha = 0.85
 window_x = 100
 window_y = 100
 log_retention_days = 60
+flash_on_change = no
+close_browsers_on_change = no
+restart_on_change = no
 ```
 
 | Setting | Description | Range |
@@ -50,6 +56,9 @@ log_retention_days = 60
 | `enable_logging` | Write checks to log file | yes/no |
 | `always_on_screen` | Show floating overlay on launch | yes/no |
 | `log_retention_days` | Auto-purge logs older than N days | 1–365 |
+| `flash_on_change` | Flash overlay amber on IP change | yes/no |
+| `close_browsers_on_change` | Kill all browsers on IP change | yes/no |
+| `restart_on_change` | Restart PC on IP change (5s delay) | yes/no |
 
 ---
 
@@ -99,6 +108,7 @@ Trip - Tray IP/
 │   ├── constants.py           # Paths & metadata
 │   ├── config.py              # Thread-safe config
 │   ├── ip_monitor.py          # Background IP poller
+│   ├── ip_actions.py          # IP change actions (close browsers, restart)
 │   ├── logging_manager.py     # CSV logger + auto-purge
 │   ├── notifications.py       # Windows toast wrapper
 │   └── ui/

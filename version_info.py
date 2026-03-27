@@ -18,7 +18,7 @@ from PyInstaller.utils.win32.versioninfo import (
 
 # ── Keep in sync with src/constants.py & installer.iss ──
 _MAJOR = 2
-_MINOR = 3
+_MINOR = 4
 _PATCH = 0
 _BUILD = 0
 

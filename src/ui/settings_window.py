@@ -315,6 +315,25 @@ class SettingsWindow:
         tk.Label(sec3, text="Logs older than this are automatically purged on startup.",
                 font=("Segoe UI", 9), bg=BG_CARD, fg=FG_MUTED).pack(anchor="w", pady=(2, 0))
 
+        # ── IP Change Actions section
+        sec4 = self._make_section(inner, "⚡  IP Change Actions", row=3)
+
+        self._flash_var = BooleanVar(value=self._config.flash_on_change)
+        self._close_browsers_var = BooleanVar(value=self._config.close_browsers_on_change)
+        self._restart_var = BooleanVar(value=self._config.restart_on_change)
+
+        self._make_toggle(sec4, "Flash floating window on IP change", self._flash_var)
+        tk.Label(sec4, text="The overlay will flash amber until you click it.",
+                font=("Segoe UI", 9), bg=BG_CARD, fg=FG_MUTED).pack(anchor="w", pady=(0, 4))
+
+        self._make_toggle(sec4, "Close all browsers on IP change", self._close_browsers_var)
+        tk.Label(sec4, text="⚠  Forcefully closes Chrome, Firefox, Edge, Brave, Opera & Vivaldi.",
+                font=("Segoe UI", 9), bg=BG_CARD, fg="#fbbf24").pack(anchor="w", pady=(0, 4))
+
+        self._make_toggle(sec4, "Restart PC on IP change", self._restart_var)
+        tk.Label(sec4, text="⚠  The PC will restart after a 5-second grace period.",
+                font=("Segoe UI", 9), bg=BG_CARD, fg="#f87171").pack(anchor="w", pady=(0, 4))
+
         # Bind mouse wheel after building
         inner._canvas._bind_wheel(inner)
 
@@ -760,6 +779,9 @@ class SettingsWindow:
         self._config.set("enable_logging", "yes" if self._log_var.get() else "no")
         self._config.set("always_on_screen", "yes" if self._screen_var.get() else "no")
         self._config.set("log_retention_days", str(retention))
+        self._config.set("flash_on_change", "yes" if self._flash_var.get() else "no")
+        self._config.set("close_browsers_on_change", "yes" if self._close_browsers_var.get() else "no")
+        self._config.set("restart_on_change", "yes" if self._restart_var.get() else "no")
         self._config.save()
         self._config.reload()
 

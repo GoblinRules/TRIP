@@ -92,6 +92,18 @@ class ConfigManager:
         return max(1, min(365, val))
 
     @property
+    def flash_on_change(self) -> bool:
+        return self.get_bool("flash_on_change", fallback=False)
+
+    @property
+    def close_browsers_on_change(self) -> bool:
+        return self.get_bool("close_browsers_on_change", fallback=False)
+
+    @property
+    def restart_on_change(self) -> bool:
+        return self.get_bool("restart_on_change", fallback=False)
+
+    @property
     def window_alpha(self) -> float:
         return self.get_float("window_alpha", fallback=0.85)
 
